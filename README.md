@@ -191,6 +191,7 @@ limitations under the License.
 [librarian]:        https://github.com/applicationsonline/librarian#readme
 [lwrp]:             http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+%28LWRP%29
 [mysql_cb]:         http://community.opscode.com/cookbooks/mysql
+[nginx_cb]:         http://community.opscode.com/cookbooks/nginx
 [postgresql_cb]:    http://community.opscode.com/cookbooks/postgresql
 [runit_cb]:         http://community.opscode.com/cookbooks/runit
 [user_cb]:          http://community.opscode.com/cookbooks/user
