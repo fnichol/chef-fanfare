@@ -3,6 +3,7 @@
 .rbenv-version
 
 # bundler state
+Gemfile.lock
 /.bundle
 /vendor/bundle/
 
