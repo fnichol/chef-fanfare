@@ -1,2 +1,22 @@
+# ruby management
 .rvmrc
 .rbenv-version
+
+# bundler state
+/.bundle
+/vendor/bundle/
+
+# scm revert files
+**.orig
+
+# mac finder poop
+.DS_Store
+
+# netbeans project directory
+/nbproject/
+
+# textmate project files
+/*.tmpproj
+
+# vim poop
+**.swp
