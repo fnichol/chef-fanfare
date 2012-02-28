@@ -21,67 +21,6 @@
 
 class Chef
   module Fanfare
-    class DbInfo
-      attr_reader :config
-      attr_reader :node
-
-      def initialize(config, node)
-        @config = config
-        @node = node
-      end
-
-      def adapter
-        config['db']['adapter'] || config['db']['type'] ||
-          node['fanfare']['default_db_type']
-      end
-
-      def type
-        config['db']['type'] || adapter.sub(/^mysql2/, 'mysql')
-      end
-
-      def user_username
-        if config['db']['username']
-          config['db']['username']
-        elsif type == "mysql"
-          # mysql has a limit on length of usernames, ugh
-          # http://twitter.com/fnichol/status/169198445687611393
-          name_bits = config['name'].sub(/staging$/, 'stg').
-            sub(/production$/, 'prod'). sub(/development$/, 'dev').
-            rpartition(/_/)
-          name_bits[0] = name_bits[0].slice(
-            0...(15 - (name_bits[1].length + name_bits[2].length)))
-          result = name_bits.join
-          ::Chef::Log.info("MySQL database username of '#{config['name']}' " +
-                           "has been shortened to '#{result}'")
-          result
-        else
-          config['name']
-        end
-      end
-
-      def user_password
-        config['db']['password']
-      end
-
-      def host
-        config['db']['host']
-      end
-
-      def port
-        if config['db']['port']
-          config['db']['port']
-        elsif type == "mysql"
-          "3306"
-        elsif type == "postgresql"
-          "5432"
-        end
-      end
-
-      def database
-        config['db']['database'] || config['name']
-      end
-    end
-
     module RecipeHelpers
       def set_app_defaults(apps)
         http_port = node['fanfare']['first_http_port']
