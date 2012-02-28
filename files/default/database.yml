@@ -1,0 +1,85 @@
+<%
+
+require 'cgi'
+require 'uri'
+
+begin
+  uri = URI.parse(ENV["DATABASE_URL"])
+rescue URI::InvalidURIError
+  raise "Invalid DATABASE_URL"
+end
+
+raise "No RACK_ENV or RAILS_ENV found" unless ENV["RAILS_ENV"] || ENV["RACK_ENV"]
+
+def attribute(name, value)
+  value ? "#{name}: #{value}" : ""
+end
+
+def adapter(uri)
+  adapter = uri.scheme
+  adapter = "postgresql" if adapter == "postgres"
+  adapter
+end
+
+def database(uri)
+  (uri.path || "").split("/")[1]
+end
+
+def username(uri)
+  uri.user
+end
+
+def password(uri)
+  uri.password
+end
+
+def host(uri)
+  uri.host
+end
+
+def port(uri)
+  uri.port
+end
+
+def params(uri)
+  CGI.parse(uri.query || "")
+end
+
+%>
+
+<%= ENV["RAILS_ENV"] || ENV["RACK_ENV"] %>:
+  <%= attribute "adapter",  adapter(uri) %>
+  <%= attribute "database", database(uri) %>
+  <%= attribute "username", username(uri) %>
+  <%= attribute "password", password(uri) %>
+  <%= attribute "host",     host(uri) %>
+  <%= attribute "port",     port(uri) %>
+
+<% params(uri).each do |key, value| %>
+  <%= key %>: <%= value.first %>
+<% end %>
+
+<% ENV.select { |k| k =~ /^DATABASE_URL_/ }.each do |conn_var_name, url| %>
+<%
+  begin
+    uri = URI.parse(url)
+  rescue URI::InvalidURIError
+    raise "Invalid #{conn_var_name}"
+  end
+
+  conn_name = conn_var_name.sub(/^DATABASE_URL_/, '').downcase +
+    "_" + (ENV["RAILS_ENV"] || ENV["RACK_ENV"])
+%>
+
+<%= conn_name %>:
+  <%= attribute "adapter",  adapter(uri) %>
+  <%= attribute "database", database(uri) %>
+  <%= attribute "username", username(uri) %>
+  <%= attribute "password", password(uri) %>
+  <%= attribute "host",     host(uri) %>
+  <%= attribute "port",     port(uri) %>
+
+<% params(uri).each do |key, value| %>
+  <%= key %>: <%= value.first %>
+<% end %>
+<% end %>
