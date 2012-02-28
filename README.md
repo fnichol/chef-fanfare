@@ -150,6 +150,18 @@ The database type to be used if not set in an application data bag item.
 
 The default is `"postgresql"`.
 
+### <a name="attributes-default-app-type"></a> default_app_type
+
+The application type to be used if not set in an application data bag item.
+
+The default is `"rails"`.
+
+### <a name="attributes-first-http-port"></a> first_http_port
+
+The starting HTTP port number for populating Foreman `.env` files.
+
+The default is `8000`.
+
 ## <a name="lwrps"></a> Resources and Providers
 
 There are **no** resources and providers in this cookbook.

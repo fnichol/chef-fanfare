@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: fanfare
-# attributes:: default
+# Attributes:: default
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,5 +19,7 @@
 # limitations under the License.
 #
 
-default['fanfare']['root_path']       = "/srv"
-default['fanfare']['default_db_type'] = "postgresql"
+default['fanfare']['root_path']         = "/srv"
+default['fanfare']['default_db_type']   = "postgresql"
+default['fanfare']['default_app_type']  = "rails"
+default['fanfare']['first_http_port']   = 8000

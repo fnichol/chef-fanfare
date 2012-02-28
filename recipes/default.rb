@@ -17,4 +17,7 @@
 # limitations under the License.
 #
 
-
+class Chef::Recipe
+  # mix in recipe helpers
+  include Chef::Fanfare::RecipeHelpers
+end

@@ -1,0 +1,4 @@
+#!/bin/sh
+cd <%= engine.directory %>
+export $(cat .env)
+exec <%= process.command %>

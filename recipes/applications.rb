@@ -17,4 +17,40 @@
 # limitations under the License.
 #
 
+include_recipe 'fanfare'
 
+bag   = 'fanfare_apps'
+data_bag_items = begin
+  data_bag(bag)
+rescue => ex
+  Chef::Log.warn("Data bag #{bag} not found (#{ex}), so skipping")
+  []
+end
+
+# sorted array of application data hashes with defaults filled in
+apps = data_bag_items.map { |a| (data_bag_item(bag, a) || Hash.new).to_hash }
+set_app_defaults(apps)
+apps.sort! { |x, y| x['id'] <=> y['id'] }
+
+# array of all application users
+app_users = apps.map { |a| a['user'] }.uniq
+
+# create application users
+user_hash = Hash.new
+Array(app_users).sort.each do |user|
+  user_hash[user] = create_app_user(user)
+
+  create_app_user_dotfiles            user_hash[user]
+  create_app_user_foreman_templates   user_hash[user]
+  create_app_user_runit_service       user_hash[user]
+end
+app_users = user_hash
+
+# create application ports
+apps.each do |config|
+  app_user = app_users[config['user']]
+
+  create_app_dirs         config, app_user
+  create_env_file         config, app_user
+  create_app_dir_symlink  config, app_user
+end
