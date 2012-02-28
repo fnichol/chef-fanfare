@@ -18,3 +18,21 @@
 #
 
 include_recipe 'fanfare'
+
+bag   = 'fanfare_apps'
+data_bag_items = begin
+  data_bag(bag)
+rescue => ex
+  Chef::Log.warn("Data bag #{bag} not found (#{ex}), so skipping")
+  []
+end
+
+# sorted array of application data hashes with defaults filled in
+apps = data_bag_items.map { |a| (data_bag_item(bag, a) || Hash.new).to_hash }
+set_app_defaults(apps)
+apps.sort! { |x, y| x['id'] <=> y['id'] }
+
+
+# create databases and database users
+Array(apps).each do |config|
+end
