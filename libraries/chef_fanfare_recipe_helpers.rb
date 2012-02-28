@@ -99,6 +99,8 @@ class Chef
 
           if app['type'] == "rails" && app['env']['RAILS_ENV'].nil?
             app['env']['RAILS_ENV'] = "production"
+          elsif app['type'] == "rack" && app['env']['RACK_ENV'].nil?
+            app['env']['RACK_ENV'] = "production"
           end
 
           if app['db'] && app['env']['DATABASE_URL'].nil?
