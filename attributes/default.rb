@@ -23,3 +23,5 @@ default['fanfare']['root_path']         = "/srv"
 default['fanfare']['default_db_type']   = "postgresql"
 default['fanfare']['default_app_type']  = "rails"
 default['fanfare']['first_http_port']   = 8000
+
+default['fanfare']['default_env_path'] = "/usr/local/bin:/usr/bin:/bin"

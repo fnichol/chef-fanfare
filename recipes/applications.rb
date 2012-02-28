@@ -50,8 +50,10 @@ app_users = user_hash
 Array(apps).each do |config|
   app_user = app_users[config['user']]
 
-  create_app_dirs         config, app_user
-  create_env_file         config, app_user
-  create_database_yaml    config, app_user
-  create_app_dir_symlink  config, app_user
+  set_app_env_path          config, app_user
+  set_app_env_database_url  config, app_user
+  create_app_dirs           config, app_user
+  create_env_file           config, app_user
+  create_database_yaml      config, app_user
+  create_app_dir_symlink    config, app_user
 end

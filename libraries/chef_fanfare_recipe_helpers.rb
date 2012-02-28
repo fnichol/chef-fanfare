@@ -102,16 +102,39 @@ class Chef
           elsif app['type'] == "rack" && app['env']['RACK_ENV'].nil?
             app['env']['RACK_ENV'] = "production"
           end
+        end
+      end
 
-          if app['db'] && app['env']['DATABASE_URL'].nil?
-            db = Chef::Fanfare::DbInfo.new(app, node)
+      def set_app_env_path(app, user)
+        if app['env']['PATH'].nil?
+          app['env']['PATH'] = node['fanfare']['default_env_path']
 
-            app['env']['DATABASE_URL'] = [
-              "#{db.adapter}://",
-              "#{db.user_username}:#{db.user_password}@",
-              "#{db.host}/#{db.database}"
-            ].join
+          if node['rbenv'] && node['rbenv']['root_path']
+            rbenv_root = node['rbenv']['root_path']
+
+            app['env']['PATH'] = [
+              "#{user['home']}/.rbenv/shims:#{user['home']}/.rbenv/bin",
+              "#{rbenv_root}/shims:#{rbenv_root}/bin",
+              app['env']['PATH']
+            ].join(':')
           end
+
+          app['env']['PATH'] = [
+            "#{node['fanfare']['root_path']}/#{app['name']}/current/bin",
+            app['env']['PATH']
+          ].join(':')
+        end
+      end
+
+      def set_app_env_database_url(app, user)
+        if app['db'] && app['env']['DATABASE_URL'].nil?
+          db = Chef::Fanfare::DbInfo.new(app, node)
+
+          app['env']['DATABASE_URL'] = [
+            "#{db.adapter}://",
+            "#{db.user_username}:#{db.user_password}@",
+            "#{db.host}/#{db.database}"
+          ].join
         end
       end
 
