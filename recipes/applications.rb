@@ -47,7 +47,7 @@ end
 app_users = user_hash
 
 # create application ports
-apps.each do |config|
+Array(apps).each do |config|
   app_user = app_users[config['user']]
 
   create_app_dirs         config, app_user
