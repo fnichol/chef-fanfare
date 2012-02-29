@@ -27,12 +27,26 @@ rescue => ex
   []
 end
 
-# sorted array of application data hashes with defaults filled in
+# array of application data hashes
 apps = data_bag_items.map { |a| (data_bag_item(bag, a) || Hash.new).to_hash }
+# select all apps that define require a db in my cluster for my database type
+apps = apps.select do |app|
+  app['db_info'] = Chef::Fanfare::DbInfo.new(app, node)
+
+  app['db'] &&
+  node.role?("cluster_#{app['cluster']}") &&
+  node.role?("facet_#{app['db_info'].type}_node")
+end
+# set defaults for apps
 set_app_defaults(apps)
+# deterministically sort the apps
 apps.sort! { |x, y| x['id'] <=> y['id'] }
 
+# install mysql and/or pg gem if required by at least one app
+apps.map { |a| a['db_info'].gem }.uniq.each { |gem| gem_package gem }
 
 # create databases and database users
-Array(apps).each do |config|
+Array(apps).each do |app|
+  create_app_db       app['db_info']
+  create_app_db_user  app['db_info']
 end

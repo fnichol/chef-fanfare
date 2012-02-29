@@ -80,6 +80,44 @@ class Chef
       def database
         config['db']['database'] || config['name']
       end
+
+      def gem
+        if type == "mysql"
+          "mysql"
+        else
+          "pg"
+        end
+      end
+
+      def provider
+        Chef::Provider::Database.const_get(
+          type.capitalize.to_sym)
+      end
+
+      def user_provider
+        Chef::Provider::Database.const_get(
+          type.capitalize.concat("User").to_sym)
+      end
+
+      def connection_info
+        send("#{type}_db_connection_info")
+      end
+
+      private
+
+      def postgresql_db_connection_info
+        { :host => "localhost",
+          :username => "postgres",
+          :password => node['postgresql']['password']['postgres']
+        }
+      end
+
+      def mysql_db_connection_info
+        { :host => "localhost",
+          :username => "root",
+          :password => node['mysql']['server_root_password']
+        }
+      end
     end
   end
 end

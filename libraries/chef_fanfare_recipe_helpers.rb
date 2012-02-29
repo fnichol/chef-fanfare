@@ -203,6 +203,34 @@ class Chef
           group   user['gid']
         end
       end
+
+      def create_app_db(db)
+        database db.database do
+          connection  db.connection_info
+          provider    db.provider
+          action      :create
+        end
+      end
+
+      def create_app_db_user(db)
+        database_user db.user_username do
+          connection      db.connection_info
+          password        db.user_password
+          database_name   db.database  if db.type == "mysql"
+          provider        db.user_provider
+          action          :create
+        end
+
+        database_user db.user_username do
+          connection      db.connection_info
+          password        db.user_password
+          database_name   db.database
+          privileges      [ :all ]
+          host            "%"   if db.type == "mysql"
+          provider        db.user_provider
+          action          :grant
+        end
+      end
     end
   end
 end
