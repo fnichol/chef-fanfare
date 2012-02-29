@@ -25,3 +25,6 @@ default['fanfare']['default_app_type']  = "rails"
 default['fanfare']['first_http_port']   = 8000
 
 default['fanfare']['default_env_path'] = "/usr/local/bin:/usr/bin:/bin"
+
+default['fanfare']['http']['ssl_certs_path']    = "/etc/ssl/certs"
+default['fanfare']['http']['ssl_private_path']  = "/etc/ssl/private"

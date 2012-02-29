@@ -26,10 +26,21 @@ class Chef
         http_port = node['fanfare']['first_http_port']
 
         apps.each do |app|
-          app['user'] ||= app['id']
-          app['name'] ||= app['id']
-          app['type'] ||= node['fanfare']['default_app_type']
-          app['env']  ||= Hash.new
+          app['user']           ||= app['id']
+          app['name']           ||= app['id']
+          app['type']           ||= node['fanfare']['default_app_type']
+          app['env']            ||= Hash.new
+          app['vhost_template'] ||= "fanfare::nginx_vhost.conf.erb"
+          app['http']           ||= Hash.new
+          app['http']['http_port']   ||= 80
+          app['http']['https_port']  ||= 443
+
+          app['http']['ssl_certificate']      ||= "#{app['name']}.crt"
+          app['http']['ssl_certificate_key']  ||= "#{app['name']}.key"
+
+          deploy_to = "#{node['fanfare']['root_path']}/#{app['name']}"
+          app['http']['upstream_server'] ||=
+            "unix:#{deploy_to}/shared/sockets/unicorn.sock"
 
           if app['env']['PORT'].nil?
             app['env']['PORT'] = http_port.to_s
@@ -230,6 +241,28 @@ class Chef
           provider        db.user_provider
           action          :grant
         end
+      end
+
+      def create_app_vhost(app, user)
+        template_cookbook, template_source = app['vhost_template'].split('::')
+
+        template "#{node['nginx']['dir']}/sites-available/#{app['name']}.conf" do
+          cookbook    template_cookbook
+          source      template_source
+          owner       "root"
+          mode        "0644"
+          variables({
+            :app              => app,
+            :deploy_to_path   => "#{node['fanfare']['root_path']}/#{app['name']}",
+            :log_path         => node['nginx']['log_dir'],
+            :ssl_certs_path   => node['fanfare']['http']['ssl_certs_path'],
+            :ssl_private_path => node['fanfare']['http']['ssl_private_path']
+          })
+
+          not_if      { template_cookbook == "none" }
+        end
+
+        nginx_site "#{app['name']}.conf"
       end
     end
   end

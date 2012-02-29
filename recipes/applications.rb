@@ -63,4 +63,9 @@ Array(apps).each do |config|
   create_env_file           config, app_user
   create_database_yaml      config, app_user
   create_app_dir_symlink    config, app_user
+  create_app_vhost          config, app_user
+end
+
+nginx_site "default" do
+  enable  false
 end

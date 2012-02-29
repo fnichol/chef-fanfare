@@ -162,6 +162,24 @@ The starting HTTP port number for populating Foreman `.env` files.
 
 The default is `8000`.
 
+### <a name="attributes-default-env-path"></a> default_env_path
+
+The intial `PATH` that will be used by all Foreman managed processes..
+
+The default depends on the platform.
+
+### <a name="attributes-http-ssl-certs-path"></a> http/ssl_certs_path
+
+The base path where all public SSL certificate keys are located.
+
+The default is `/etc/ssl/certs`.
+
+### <a name="attributes-http-ssl-private-path"></a> http/ssl_private_path
+
+The base path where all private SSL keys are located.
+
+The default is `/etc/ssl/private`.
+
 ## <a name="lwrps"></a> Resources and Providers
 
 There are **no** resources and providers in this cookbook.
