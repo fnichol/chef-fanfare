@@ -2,7 +2,7 @@
 
 ## <a name="description"></a> Description
 
-Data bag driven application deployment.
+Data bag driven application hosting.
 
 ## <a name="usage"></a> Usage
 
