@@ -35,7 +35,8 @@ apps = apps.select do |app|
 
   app['db'] &&
   node.role?("cluster_#{app['cluster']}") &&
-  node.role?("facet_#{app['db_info'].type}_node")
+  node.role?("facet_#{app['db_info'].type}_node") &&
+  node.role?("facet_primary")
 end
 # set defaults for apps
 set_app_defaults(apps)
