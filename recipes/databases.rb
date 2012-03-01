@@ -34,9 +34,9 @@ apps = apps.select do |app|
   app['db_info'] = Chef::Fanfare::DbInfo.new(app, node)
 
   app['db'] &&
-  node.role?("cluster_#{app['cluster']}") &&
-  node.role?("facet_#{app['db_info'].type}_node") &&
-  node.role?("facet_primary")
+  node.role?("#{app['cluster']}_cluster") &&
+  node.role?("#{app['db_info'].type}_node") &&
+  node.role?("primary_node")
 end
 # set defaults for apps
 set_app_defaults(apps)

@@ -31,8 +31,8 @@ end
 apps = data_bag_items.map { |a| (data_bag_item(bag, a) || Hash.new).to_hash }
 # select all apps in my cluster
 apps = apps.select do |app|
-  node.role?("cluster_#{app['cluster']}") &&
-  node.role?("facet_app_node")
+  node.role?("#{app['cluster']}_cluster") &&
+  node.role?("app_node")
 end
 # set defaults for apps
 set_app_defaults(apps)
