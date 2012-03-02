@@ -91,9 +91,11 @@ class Chef
       def create_app_user(user)
         u = begin
           # look up the user's data bag item
-          data_bag_item(node['user']['data_bag'], name.gsub(/[.]/, '-'))
+          data_bag_item(node['user']['data_bag'], user.gsub(/[.]/, '-'))
         rescue => ex
           # if user isn't defined in a data bag, create a default one
+          ::Chef::Log.info "Couldn't find data bag item: " +
+            "#{node['user']['data_bag']}/#{user.gsub(/[.]/, '-')}"
           { 'username' => user }
         end
         username  = u['username'] || u['id']
