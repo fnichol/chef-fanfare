@@ -1,0 +1,17 @@
+{
+  "id"      : "website_production",
+  "cluster" : "production",
+
+  "db" : {
+    "password"  : "hereisasecret"
+  },
+
+  "env" : {
+    "HOPTOAD_API_KEY" : "abc123...",
+    "S3_BUCKET"       : "yeppers"
+  },
+
+  "http" : {
+    "host_name" : "example.com"
+  }
+}

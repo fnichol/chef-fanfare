@@ -1,0 +1,9 @@
+{
+  "description" : "Application Node 2",
+
+  "run_list"  : [
+    "role[production_cluster]",
+    "role[primary_node]",
+    "role[app_node]"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id"      : "api_production",
+  "cluster" : "production",
+
+  "db" : {
+    "password"  : "anothersecret"
+  },
+
+  "env" : {
+    "HOPTOAD_API_KEY" : "abc123..."
+  },
+
+  "http" : {
+    "host_name" : "api.example.com"
+  }
+}
