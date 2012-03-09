@@ -29,7 +29,7 @@ server {
   root <%= @deploy_to_path %>/current/public;
 
   access_log <%= @log_path %>/<%= app_name %>-access.log combined;
-  error_log  <%= @log_path %>/<%= app_name %>-access.log;
+  error_log  <%= @log_path %>/<%= app_name %>-error.log;
 
   rewrite_log on;
 
