@@ -1,0 +1,48 @@
+<%
+  app_name          = @app['name']
+  host_name         = @app['http']['host_name']
+  use_ssl           = @app['http']['use_ssl']
+  http_port         = @app['http']['http_port']
+  https_port        = @app['http']['https_port']
+  ssl_cert          = "#{@ssl_certs_path}/#{@app['http']['ssl_certificate']}"
+  ssl_cert_key      = "#{@ssl_private_path}/#{@app['http']['ssl_certificate_key']}"
+-%>
+server {
+  server_name <%= Array(host_name).join(' ') %>;
+<% Array(http_port).each do |port| -%>
+  listen <%= port %>;
+<% end -%>
+<% if use_ssl -%>
+  <% Array(https_port).each do |port| -%>
+  listen <%= port %> ssl;
+  <% end -%>
+
+  ssl_certificate     <%= ssl_cert %>;
+  ssl_certificate_key <%= ssl_cert_key %>;
+<% end -%>
+
+  root <%= @deploy_to_path %>/current/public;
+
+  access_log <%= @log_path %>/<%= app_name %>-access.log combined;
+  error_log  <%= @log_path %>/<%= app_name %>-error.log;
+
+  rewrite_log on;
+
+  # use the application's 500.html page
+  error_page 500 502 503 504 /500.html;
+
+  # allow clients to upload large files (if necessary)
+  client_max_body_size 4G;
+
+  location / {
+    try_files /system/maintenance.html
+              $uri $uri/index.html $uri.html
+              @app;
+  }
+
+  location ~ ^/(assets)/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+}
