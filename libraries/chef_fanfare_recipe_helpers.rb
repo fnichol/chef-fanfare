@@ -30,7 +30,6 @@ class Chef
           app['name']           ||= app['id']
           app['type']           ||= node['fanfare']['default_app_type']
           app['env']            ||= Hash.new
-          app['vhost_template'] ||= "fanfare::nginx_vhost.conf.erb"
           app['http']           ||= Hash.new
           app['http']['http_port']   ||= 80
           app['http']['https_port']  ||= 443
@@ -41,6 +40,12 @@ class Chef
           deploy_to = "#{node['fanfare']['root_path']}/#{app['name']}"
           app['http']['upstream_server'] ||=
             "unix:#{deploy_to}/shared/sockets/unicorn.sock"
+
+          if app['type'] == "static"
+            app['vhost_template'] ||= "fanfare::nginx_vhost_no_upstream.conf.erb"
+          else
+            app['vhost_template'] ||= "fanfare::nginx_vhost.conf.erb"
+          end
 
           if app['env']['PORT'].nil?
             app['env']['PORT'] = http_port.to_s
