@@ -267,6 +267,7 @@ class Chef
           })
 
           not_if      { template_cookbook == "none" }
+          notifies    :reload, "service[nginx]"
         end
 
         nginx_site "#{app['name']}.conf"
