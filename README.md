@@ -226,5 +226,6 @@ limitations under the License.
 [runit_cb]:         http://community.opscode.com/cookbooks/runit
 [user_cb]:          http://community.opscode.com/cookbooks/user
 
+[fnichol]:      https://github.com/fnichol
 [repo]:         https://github.com/fnichol/chef-fanfare
 [issues]:       https://github.com/fnichol/chef-fanfare/issues
