@@ -31,6 +31,7 @@ class Chef
           app['type']           ||= node['fanfare']['default_app_type']
           app['env']            ||= Hash.new
           app['http']           ||= Hash.new
+          app['http']['host_name']   ||= "_"
           app['http']['http_port']   ||= 80
           app['http']['https_port']  ||= 443
 
