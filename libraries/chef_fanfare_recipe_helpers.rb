@@ -125,6 +125,9 @@ class Chef
           owner   user['id']
           group   user['gid']
           mode    "0644"
+          variables(
+            :rbenv_root_path => (node['rbenv'] && node['rbenv']['root_path'])
+          )
         end
       end
 
