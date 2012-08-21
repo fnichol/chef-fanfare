@@ -1,4 +1,4 @@
-# <a name="title"></a> chef-fanfare
+# <a name="title"></a> chef-fanfare [![Build Status](https://secure.travis-ci.org/fnichol/chef-fanfare.png?branch=master)](http://travis-ci.org/fnichol/chef-fanfare)
 
 ## <a name="description"></a> Description
 
