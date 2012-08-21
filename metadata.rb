@@ -3,7 +3,7 @@ maintainer_email "fnichol@nichol.ca"
 license          "Apache 2.0"
 description      "Data bag driven application deployment."
 long_description "Please refer to README.md (it's long)."
-version          "0.1.0"
+version          "0.1.2"
 
 supports "ubuntu"
 

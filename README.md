@@ -79,7 +79,7 @@ Or to reference the Git version:
 
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'fanfare',
-      :git => 'https://github.com/fnichol/chef-fanfare', :ref => 'v0.1.0'
+      :git => 'https://github.com/fnichol/chef-fanfare', :ref => 'v0.1.2'
     END_OF_CHEFFILE
     librarian-chef install
 
@@ -91,7 +91,7 @@ plugin:
 
     gem install knife-github-cookbooks
     cd chef-repo
-    knife cookbook github install fnichol/chef-fanfare/v0.1.0
+    knife cookbook github install fnichol/chef-fanfare/v0.1.2
 
 ### <a name="installation-tarball"></a> As a Tarball
 
@@ -99,7 +99,7 @@ If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
 Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
 
     cd chef-repo/cookbooks
-    curl -Ls https://github.com/fnichol/chef-fanfare/tarball/v0.1.0 | tar xfz - && \
+    curl -Ls https://github.com/fnichol/chef-fanfare/tarball/v0.1.2 | tar xfz - && \
       mv fnichol-chef-fanfare-* fanfare
 
 ### <a name="installation-gitsubmodule"></a> As a Git Submodule
